@@ -1,4 +1,4 @@
-(SDL/ OpenGL code: window creation, texture upload, event polling)
+//(SDL/ OpenGL code: window creation, texture upload, event polling)
 
 //conversion simulation -> pixels
 
