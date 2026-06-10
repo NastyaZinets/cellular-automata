@@ -43,7 +43,7 @@ void Renderer::render(int r, int g, int b){
     SDL_SetRenderDrawColor(renderer, r, g, b, 250);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-    SDL_Delay( 1000);
+    SDL_Delay( 16);
 }
 
 void Renderer::shutdown(){
@@ -57,8 +57,9 @@ bool Renderer::isRunning() const{
 }
 
 void Renderer::processEvents(){
-    SDL_PollEvent(&event);
-    if(event.type == SDL_QUIT){
-        running = false;
+    while (SDL_PollEvent(&event)){
+        if(event.type == SDL_QUIT){
+            running = false;
+        }
     }
 }
