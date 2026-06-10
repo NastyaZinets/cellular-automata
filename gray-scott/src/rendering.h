@@ -4,7 +4,7 @@
 class Renderer{
     public:
         bool initialize();
-        void render();
+        void render(int r, int g, int b);
         void shutdown();
     private:
         SDL_Window *window;

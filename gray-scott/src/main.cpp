@@ -16,10 +16,21 @@ int main(int argc, char* argv[]){
     //first_try.view();
     //first_try.update(2);
     //first_try.view();
+    int green = 255;
+    int red = 0;
 
     Renderer first_init;
-    first_init.initialize();
-    first_init.render();
+    if (first_init.initialize()){
+        std::cout << red << " " << green << "\n";
+        while(green > 0){
+            first_init.render(red, green, 0);
+        }
+
+        green -= 10;
+        red += 10;
+    }
+
+    first_init.shutdown();
 
     return 0;
 }
