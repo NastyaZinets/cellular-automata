@@ -21,13 +21,12 @@ int main(int argc, char* argv[]){
 
     Renderer first_init;
     if (first_init.initialize()){
-        std::cout << red << " " << green << "\n";
-        while(green > 0){
+        while(first_init.isRunning()){
+            first_init.processEvents();
             first_init.render(red, green, 0);
+            green -= 10;
+            red += 10;
         }
-
-        green -= 10;
-        red += 10;
     }
 
     first_init.shutdown();

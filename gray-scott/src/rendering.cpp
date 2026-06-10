@@ -6,6 +6,12 @@
 
 #include "rendering.h"
 
+Renderer::Renderer(){
+    window = nullptr;
+    renderer = nullptr;
+    running = false;
+}
+
 bool Renderer::initialize(){
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
         std::cout << SDL_GetError() << "\n";
@@ -13,16 +19,21 @@ bool Renderer::initialize(){
         //SDL_Quit();
         return false;
     }
+
     window = SDL_CreateWindow("1.0", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,720,600,0);
     if( window == nullptr){
         std::cout << SDL_GetError() << "\n";
         return false;
     }
+
     renderer = SDL_CreateRenderer(window, -1, 0);
     if( renderer == nullptr){
         std::cout << SDL_GetError() << "\n";
         return false;
     }
+
+    running = true;
+
     std::cout << "success\n";
     return true;
 }
@@ -38,5 +49,16 @@ void Renderer::render(int r, int g, int b){
 void Renderer::shutdown(){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_Quit;
+    SDL_Quit();
+}
+
+bool Renderer::isRunning() const{
+    return running;
+}
+
+void Renderer::processEvents(){
+    SDL_PollEvent(&event);
+    if(event.type == SDL_QUIT){
+        running = false;
+    }
 }
