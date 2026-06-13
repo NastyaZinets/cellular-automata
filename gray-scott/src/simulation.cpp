@@ -8,19 +8,67 @@ Simulation::Simulation(int w, int h){
 
     U.resize(w * h);
     V.resize(w * h);
+
+    U_next.resize(w * h);
+    V_next.resize(w * h);
 }
 
-void Simulation::update( float dt){
-    //U[dt] = 0;
-    //V[dt] = 1;
+int Simulation::index(int x, int y){
+    return y * width + x;
+}
 
-    for(size_t i=0; i< U.size(); i++){
-        int y = i / width;
-        int x = i % width + 1;
-
-        U[i] =static_cast<double> (x )/ width;
-        //std::cout << U[i] << " ";
+void Simulation::init(){
+    for(size_t i = U.size()/3; i< U.size()*2/3; i++){
+        if(  i % width > width/3 && i % width < width*2/3 ){
+        U[i] = 1;
+        }
     }
+}
+
+void Simulation::calcAvgU(int i){
+    
+    double sum = 0;
+    int num = 0; 
+
+    //i_up
+    if(i-width >= 0) {
+        sum += U[i-width];
+        num++;
+    }
+
+    //i_down
+    if(i+width < U.size()){
+        sum += U[i+width];
+        num++;
+    }
+
+    //i_left
+    if(i % width > 0){
+        sum += U[i-1];
+        num++;
+    }
+
+    //i_right
+    if(i % width < width - 1){
+        sum += U[i+1];
+        num++;
+    }
+
+    if( num > 0){
+        sum = sum/num;
+    }
+
+    U_next[i] = sum;
+}
+
+
+
+void Simulation::update( float dt){
+    for(size_t i = 0; i < U.size(); i++){
+        Simulation::calcAvgU(i);
+    }
+
+    U = U_next;
 }
 
 void Simulation::view(){

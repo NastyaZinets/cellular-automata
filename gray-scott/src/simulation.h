@@ -8,8 +8,16 @@ class Simulation{
         std::vector<double> U;
         std::vector<double> V;
 
+        std::vector<double> U_next;
+        std::vector<double> V_next;
+
+        void calcAvgU(int i);
+        int index(int x, int y);
+
+
     public:
         Simulation(int width, int height);
+        void init();
         void update(float dt);
         void view();
 

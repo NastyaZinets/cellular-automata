@@ -62,7 +62,7 @@ void Renderer::render(const std::vector<double>& U, const std::vector<double>& V
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     //SDL_SetRenderDrawColor(renderer, r, g, b, 250);
     SDL_RenderPresent(renderer);
-    SDL_Delay(16);
+    SDL_Delay(5);
 }
 
 void Renderer::shutdown(){
