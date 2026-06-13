@@ -18,19 +18,8 @@ void Simulation::update( float dt){
         int y = i / width;
         int x = i % width + 1;
 
-        if(y % 16 < 8){
-            U[i] = 1;
-        }
-        else{
-            U[i] = 0;
-        }
-
-        if(x % 16 < 8){
-            V[i] = 0;
-        }
-        else{
-            V[i] = 1;
-        }
+        U[i] =static_cast<double> (x )/ width;
+        //std::cout << U[i] << " ";
     }
 }
 

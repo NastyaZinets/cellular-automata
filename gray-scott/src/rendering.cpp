@@ -38,7 +38,7 @@ bool Renderer::initialize(int w, int h){
 
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STREAMING, width, height);
     if( texture == nullptr){
-        std::cout << SDL_GetError << "\n";
+        std::cout << SDL_GetError() << "\n";
         return false;
     }
 
@@ -53,18 +53,8 @@ bool Renderer::initialize(int w, int h){
 void Renderer::render(const std::vector<double>& U, const std::vector<double>& V){
     
     for( size_t i = 0; i< U.size(); i++){
-        if(U[i] == 1){
-            pixels[i] = 0x00FF0080;
-        }
-        else{
-            pixels[i] = 0x00000080;
-        }
-        if(V[i] == 1){
-            pixels[i] += 0xFF000080;
-        }
-        else{
-            pixels[i] += 0x00000080;
-        }
+        uint8_t brightness = static_cast<uint8_t>(255 * U[i]);
+        pixels[i] =  (brightness << 24) | (brightness << 16) | (brightness << 8) | 0xFF;
     }
     
     SDL_UpdateTexture(texture, NULL, pixels.data(), width*sizeof(Uint32));
@@ -76,6 +66,7 @@ void Renderer::render(const std::vector<double>& U, const std::vector<double>& V
 }
 
 void Renderer::shutdown(){
+    SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
