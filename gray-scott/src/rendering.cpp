@@ -9,10 +9,14 @@
 Renderer::Renderer(){
     window = nullptr;
     renderer = nullptr;
+    texture = nullptr;
     running = false;
 }
 
-bool Renderer::initialize(){
+bool Renderer::initialize(int w, int h){
+    width = w;
+    height = h;
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
         std::cout << SDL_GetError() << "\n";
         //std::cerr << "SDL_Init failed: " << SDL_GetError() << "\n";
@@ -20,7 +24,7 @@ bool Renderer::initialize(){
         return false;
     }
 
-    window = SDL_CreateWindow("1.0", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,720,600,0);
+    window = SDL_CreateWindow("1.0", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,height,0);
     if( window == nullptr){
         std::cout << SDL_GetError() << "\n";
         return false;
@@ -32,18 +36,33 @@ bool Renderer::initialize(){
         return false;
     }
 
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STREAMING, width, height);
+
+    pixels.resize(width * height);
+
     running = true;
 
     std::cout << "success\n";
     return true;
 }
 
-void Renderer::render(int r, int g, int b){
+void Renderer::render(const std::vector<double>& U, const std::vector<double>& V){
     
-    SDL_SetRenderDrawColor(renderer, r, g, b, 250);
+    for( size_t i = 0; i< U.size(); i++){
+        if(U[i] == 1){
+            pixels[i] = 0x00FF00FF;
+        }
+        else{
+            pixels[i] = 0x000000FF;
+        }
+    }
+    
+    SDL_UpdateTexture(texture, NULL, &pixels, width*sizeof(Uint32));
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    //SDL_SetRenderDrawColor(renderer, r, g, b, 250);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-    SDL_Delay( 16);
+    SDL_Delay(20000);
 }
 
 void Renderer::shutdown(){

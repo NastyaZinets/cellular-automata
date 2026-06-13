@@ -12,20 +12,16 @@
 #include "rendering.h"
 
 int main(int argc, char* argv[]){
-    //Simulation first_try(4, 4);
+    Simulation first_try(256, 256);
     //first_try.view();
-    //first_try.update(2);
+    first_try.update(2);
     //first_try.view();
-    int green = 255;
-    int red = 0;
-
+    
     Renderer first_init;
-    if (first_init.initialize()){
+    if (first_init.initialize( first_try.getWidth(), first_try.getHeight())){
         while(first_init.isRunning()){
             first_init.processEvents();
-            first_init.render(red, green, 0);
-            green -= 10;
-            red += 10;
+            first_init.render(first_try.getU(), first_try.getV());
         }
     }
 
