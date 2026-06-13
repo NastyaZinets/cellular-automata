@@ -15,15 +15,20 @@ void Simulation::update( float dt){
     //V[dt] = 1;
 
     for(size_t i=0; i< U.size(); i++){
-        int y = (i+1) / (width + 1);
-        int x = i % (width + 1) + 1;
+        int y = i / width;
+        int x = i % width + 1;
 
-        if(y % 8 < 4){
+        if(y % 16 < 8){
             U[i] = 1;
-            V[i] = 0;
         }
         else{
             U[i] = 0;
+        }
+
+        if(x % 16 < 8){
+            V[i] = 0;
+        }
+        else{
             V[i] = 1;
         }
     }

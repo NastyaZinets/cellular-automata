@@ -37,6 +37,10 @@ bool Renderer::initialize(int w, int h){
     }
 
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STREAMING, width, height);
+    if( texture == nullptr){
+        std::cout << SDL_GetError << "\n";
+        return false;
+    }
 
     pixels.resize(width * height);
 
@@ -50,19 +54,25 @@ void Renderer::render(const std::vector<double>& U, const std::vector<double>& V
     
     for( size_t i = 0; i< U.size(); i++){
         if(U[i] == 1){
-            pixels[i] = 0x00FF00FF;
+            pixels[i] = 0x00FF0080;
         }
         else{
-            pixels[i] = 0x000000FF;
+            pixels[i] = 0x00000080;
+        }
+        if(V[i] == 1){
+            pixels[i] += 0xFF000080;
+        }
+        else{
+            pixels[i] += 0x00000080;
         }
     }
     
-    SDL_UpdateTexture(texture, NULL, &pixels, width*sizeof(Uint32));
+    SDL_UpdateTexture(texture, NULL, pixels.data(), width*sizeof(Uint32));
+    SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     //SDL_SetRenderDrawColor(renderer, r, g, b, 250);
-    SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-    SDL_Delay(20000);
+    SDL_Delay(16);
 }
 
 void Renderer::shutdown(){

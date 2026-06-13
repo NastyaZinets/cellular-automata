@@ -12,7 +12,7 @@
 #include "rendering.h"
 
 int main(int argc, char* argv[]){
-    Simulation first_try(256, 256);
+    Simulation first_try(512, 512);
     //first_try.view();
     first_try.update(2);
     //first_try.view();
